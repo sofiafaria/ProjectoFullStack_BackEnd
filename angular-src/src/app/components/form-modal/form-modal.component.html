@@ -1,0 +1,29 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add Answer</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <form (submit)= "save()">
+    <fieldset>
+        <div class="modal-body">
+
+                <div class="form-group">
+                    <label for="answerTitle" class="form-label">Title</label>
+                    <input type="text" class="form-control" [(ngModel)]="answer.title" name="title" id="answerTitle" placeholder="Enter Title">
+                </div>
+                <div class="form-group">
+                    <label for="answerDescription" class="form-label">Description</label>
+                    <input type="text" class="form-control" [(ngModel)]="answer.description" name="description" id="answerDescription" placeholder="Enter Description">
+                </div>
+                <div class="form-check form-switch mt-4">
+                    <input class="form-check-input" type="checkbox" [(ngModel)]="answer.correct" name="correct" id="answerCorrect" checked="">
+                    <label class="form-check-label" for="answerCorrect">Is Correct</label>
+                </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-outline-dark">Save</button>
+            <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cross click')">Cancel</button>
+        </div>
+</fieldset>
+</form>

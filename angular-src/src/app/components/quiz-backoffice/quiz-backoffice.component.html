@@ -1,0 +1,31 @@
+<div class="row mt-4 mb-4">
+    <div class="col-lg-12">
+        <div class="page-header">
+            <h1>Quiz</h1>
+            <div class="d-flex flex-row-reverse">
+              <button type="button" class="btn btn-link" [routerLink]="['/backoffice/quiz', 0]" routerLinkActive="router-link-active" >+ New Quiz</button>
+            </div>
+        </div>
+    </div>
+  
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Points</th>
+            <th scope="col">Level</th>
+            <th scope="col">Active</th>
+        </thead>
+        <tbody>
+          <tr class="table-default" *ngFor="let quiz of quizzes">
+            <th scope="row">{{quiz.name}}</th>
+            <td>{{quiz.points}}</td>
+            <td>{{quiz.level}}</td>
+            <td>{{quiz.is_active}}</td>
+            <td><button type="button" class="btn btn-outline-warning me-1" [routerLink]="['/backoffice/quiz/', quiz._id]" routerLinkActive="router-link-active" >Edit</button>
+              <button type="button" class="btn btn-outline-danger ms-1" (click)="onDelete(quiz._id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+  </div>

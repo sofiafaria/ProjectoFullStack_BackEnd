@@ -1,0 +1,51 @@
+<form (submit)= "onUserSubmit()">
+    <fieldset>
+        <div class="row mt-4 mb-4">
+            <div class="col-lg-12">
+                <div class="page-header">
+                    <h1 *ngIf="isEdit();else newUser">Edit User</h1>
+                    <ng-template #newUser><h1>New User</h1></ng-template>
+                    <div class="d-flex flex-row-reverse">
+                        <button type="button" class="btn btn-link" [routerLink]="['/backoffice/users']" routerLinkActive="router-link-active" >Go Back</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" [(ngModel)]="currUser.name" name="name" id="name" aria-describedby="nameHelp" placeholder="Enter name">
+            <small id="nameHelp" class="form-text text-muted">Enter a valid name.</small>
+        </div>
+        <div class="form-group">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" [(ngModel)]="currUser.username" name="username" id="username" aria-describedby="usernameHelp" placeholder="Enter username">
+            <small id="usernameHelp" class="form-text text-muted">Enter a valid username.</small>
+        </div>
+        <div class="form-group">
+            <label for="email" class="form-label mt-4">Email</label>
+            <input type="email" class="form-control" [(ngModel)]="currUser.email" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+            <label for="password" class="form-label mt-4">Password</label>
+            <input type="password" class="form-control" [(ngModel)]="currUser.password" name="password" id="password" placeholder="Password">
+        </div>
+        <div class="form-check form-switch mt-4">
+            <input class="form-check-input" type="checkbox" [(ngModel)]="currUser.is_admin" name="is_admin" id="isAdmin" checked="">
+            <label class="form-check-label" for="isAdmin">Is Admin</label>
+        </div>
+        <div class="form-check form-switch mt-4">
+            <input class="form-check-input" type="checkbox" [(ngModel)]="currUser.is_active" name="is_active" id="isActive" checked="">
+            <label class="form-check-label" for="isActive">Is Active</label>
+        </div>
+        <div class="form-group">
+            <label class="form-label mt-4" for="points">Total Points</label>
+            <input class="form-control" id="points" type="number" [(ngModel)]="currUser.gamification.points" name="points" readonly="">
+        </div>
+        <div class="form-group" *ngIf="isEdit()">
+            <label class="form-label mt-4" for="readOnlyInput">Registered since</label>
+            <input class="form-control" id="readOnlyInput" type="datetime" placeholder="Not registered" readonly="" [(ngModel)]="currUser.registration_date" name="registration_date">
+          </div>
+        <button type="submit" class="btn btn-primary mt-4">Submit</button>
+    </fieldset>
+</form>

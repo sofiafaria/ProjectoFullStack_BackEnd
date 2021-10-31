@@ -1,0 +1,15 @@
+<div class="d-flex flex-column text-center justify-content-center align-items-center">
+    <h2 class="">{{question.question}}</h2>
+    <h5 class="">{{question.title}}</h5>
+    <h3 class="">{{question.description}}</h3>
+    <h3 class="d-none d-lg-flex mb-2 mt-1 p-2 rounded">{{ selectedAnswer || 'Pick an answer'}}</h3>
+    <h6 class="d-md-flex d-lg-none p-2 rounded">{{ selectedAnswer || 'Pick an answer'}}</h6>
+    <div class="col-4" *ngFor="let option of question.answers">
+            <div class="card mb-3" style="max-width: 20rem;" (click)="pickAnswer(question._id, option)" (mouseenter)="onHover(option._id)" (mouseleave) = "onLeave(option._id)" id="{{option._id}}">
+                <div class="card-header">{{option.title}}</div>
+                <div class="card-body">
+                  <p class="card-text">{{option.description}}</p>
+                </div>
+            </div>
+    </div>
+</div>

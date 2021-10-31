@@ -1,0 +1,82 @@
+<form (submit)= "onQuestionSubmit()">
+    <fieldset>
+        <div class="row mt-4 mb-4">
+            <div class="col-lg-12">
+                <div class="page-header">
+                    <h1 *ngIf="isEdit();else newQuestion">Edit {{currQuestion.question}}</h1>
+                    <ng-template #newQuestion><h1>New Question</h1></ng-template>
+                    <div class="d-flex flex-row-reverse">
+                        <button type="button" class="btn btn-link" [routerLink]="['/backoffice/questions']" routerLinkActive="router-link-active" >Go Back</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="question" class="form-label">Question</label>
+            <input type="text" class="form-control" [(ngModel)]="currQuestion.question" name="question" id="question" aria-describedby="questionHelp" placeholder="Enter question">
+            <small id="questionHelp" class="form-text text-muted">Enter a valid question.</small>
+        </div>
+        <div class="form-group">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" [(ngModel)]="currQuestion.title" name="title" id="title" aria-describedby="titleHelp" placeholder="Enter title">
+            <small id="titleHelp" class="form-text text-muted">Enter a valid title.</small>
+        </div>
+        <div class="form-group">
+            <label for="description" class="form-label">Description</label>
+            <input type="text" class="form-control" [(ngModel)]="currQuestion.description" name="description" id="description" aria-describedby="descriptionHelp" placeholder="Enter description">
+            <small id="descriptionHelp" class="form-text text-muted">Enter a valid description.</small>
+        </div>
+        <div class="form-group">
+            <label for="group" class="form-label">Group</label>
+            <input type="text" class="form-control" [(ngModel)]="currQuestion.group" name="group" id="group" aria-describedby="groupHelp" placeholder="Enter group">
+            <small id="groupHelp" class="form-text text-muted">Enter a valid group.</small>
+        </div>
+        <div class="form-group">
+            <label for="type" class="form-label">Type</label>
+            <input type="text" class="form-control" [(ngModel)]="currQuestion.type" name="type" id="type" aria-describedby="typeHelp" placeholder="Enter type">
+            <small id="typeHelp" class="form-text text-muted">Enter a valid type.</small>
+        </div>
+          <div class="form-group">
+            <label for="level" class="form-label">Level</label>
+            <input type="number" class="form-control" [(ngModel)]="currQuestion.level" name="level" id="level" aria-describedby="levelHelp" placeholder="Enter level">
+            <small id="levelHelp" class="form-text text-muted">Enter a valid level.</small>
+        </div>
+
+        <div class="form-check form-switch mt-4">
+            <input class="form-check-input" type="checkbox" [(ngModel)]="currQuestion.is_active" name="is_active" id="isActive" checked="">
+            <label class="form-check-label" for="isActive">Is Active</label>
+        </div>
+        <div class="form-group mt-4">
+            <label for="answers" class="form-label">Answers</label>
+            <div class="d-flex flex-row-reverse">
+                <button type="button" class="btn btn-link" (click)="openFormModal(answer)">+ New Answer</button>
+            </div>
+            <div *ngIf="currQuestion.answers.length>0;else noAnswers">
+                <div class="accordion" id="accordionExample" *ngFor="let answer of currQuestion.answers">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                            {{answer.title}}
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                            {{answer.description}}
+                            </div>
+                            <div class="d-flex flex-row-reverse">
+                                <button type="button" class="btn btn-link" (click)="remove(answer)" >Delete</button>
+                                <button type="button" class="btn btn-link" (click)="openFormModal(answer)" >Edit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ng-template #noAnswers>
+                No answers yet...
+            </ng-template>
+        </div>
+        <button type="submit" class="btn btn-primary mt-4">Submit</button>
+    </fieldset>
+</form>
+
+

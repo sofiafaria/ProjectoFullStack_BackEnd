@@ -1,0 +1,70 @@
+<form (submit)= "onQuizSubmit()">
+    <fieldset>
+        <div class="row mt-4 mb-4">
+            <div class="col-lg-12">
+                <div class="page-header">
+                    <h1 *ngIf="isEdit();else newQuiz">Edit {{currQuiz.name}}</h1>
+                    <ng-template #newQuiz><h1>New Quiz</h1></ng-template>
+                    <div class="d-flex flex-row-reverse">
+                        <button type="button" class="btn btn-link" [routerLink]="['/backoffice/quizzes']" routerLinkActive="router-link-active" >Go Back</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" [(ngModel)]="currQuiz.name" name="name" id="name" aria-describedby="nameHelp" placeholder="Enter name">
+            <small id="nameHelp" class="form-text text-muted">Enter a valid name.</small>
+        </div>
+        <div class="form-group">
+            <label for="username" class="form-label">Points</label>
+            <input type="text" class="form-control" [(ngModel)]="currQuiz.points" name="points" id="points" aria-describedby="pointsHelp" placeholder="Enter points">
+            <small id="pointsHelp" class="form-text text-muted">Enter a valid points.</small>
+        </div>
+          <div class="form-group">
+            <label for="level" class="form-label">Level</label>
+            <input type="number" class="form-control" [(ngModel)]="currQuiz.level" name="level" id="level" aria-describedby="levelHelp" placeholder="Enter level">
+            <small id="levelHelp" class="form-text text-muted">Enter a valid level.</small>
+        </div>
+        <div class="form-group">
+            <label for="lesson" class="form-label mt-4">Lesson</label>
+            <select class="form-select" id="lesson" name="lesson" [(ngModel)]="currQuiz.lesson">
+                <option *ngFor="let lesson of lessons"[value]="lesson._id">{{lesson.name}}</option>
+            </select>
+          </div>
+        <div class="form-check form-switch mt-4">
+            <input class="form-check-input" type="checkbox" [(ngModel)]="currQuiz.is_active" name="is_active" id="isActive" checked="">
+            <label class="form-check-label" for="isActive">Is Active</label>
+        </div>
+        <div class="form-group mt-4">
+            <label for="questions" class="form-label">Questions</label>
+            <div class="d-flex flex-row-reverse">
+                <button type="button" class="btn btn-link" (click)="openSelectModal()">+ Add Question</button>
+            </div>
+            <div *ngIf="currQuestions.length>0;else noQuestions">
+                <div class="accordion" id="accordionExample" *ngFor="let question of currQuestions">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                            {{question.question}}
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                            <p>{{question.title}}</p>
+                            <p>{{question.description}}</p>
+                            </div>
+                            <div class="d-flex flex-row-reverse">
+                                <button type="button" class="btn btn-link" (click)="remove(question)" >Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ng-template #noQuestions>
+                No questions yet...
+            </ng-template>
+        </div>
+        <button type="submit" class="btn btn-primary mt-4">Submit</button>
+    </fieldset>
+</form>

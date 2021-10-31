@@ -1,0 +1,55 @@
+<form (submit)= "onLessonSubmit()">
+    <fieldset>
+        <div class="row mt-4 mb-4">
+            <div class="col-lg-12">
+                <div class="page-header">
+                    <h1 *ngIf="isEdit();else newLesson">Edit {{currLesson.name}}</h1>
+                    <ng-template #newLesson><h1>New Lesson</h1></ng-template>
+                    <div class="d-flex flex-row-reverse">
+                        <button type="button" class="btn btn-link" [routerLink]="['/backoffice/lessons']" routerLinkActive="router-link-active" >Go Back</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" [(ngModel)]="currLesson.name" name="name" id="name" aria-describedby="nameHelp" placeholder="Enter name">
+            <small id="nameHelp" class="form-text text-muted">Enter a valid name.</small>
+        </div>
+        <div class="form-group">
+            <label for="username" class="form-label">Group</label>
+            <input type="text" class="form-control" [(ngModel)]="currLesson.group" name="group" id="group" aria-describedby="groupHelp" placeholder="Enter group">
+            <small id="groupHelp" class="form-text text-muted">Enter a valid group.</small>
+        </div>
+        <div class="form-group">
+            <label for="description" class="form-label mt-4" >Description</label>
+            <textarea class="form-control" [(ngModel)]="currLesson.description" name="description" id="description" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="level" class="form-label">Level</label>
+            <input type="number" class="form-control" [(ngModel)]="currLesson.level" name="level" id="level" aria-describedby="levelHelp" placeholder="Enter level">
+            <small id="levelHelp" class="form-text text-muted">Enter a valid level.</small>
+        </div>
+        <div class="form-group">
+            <label for="file" class="form-label mt-4">Images</label>
+            <input class="form-control" type="file" id="file" (change)="onFileSelect($event)">
+          </div>
+        <div *ngIf="links.length>0">
+            <div class="card mb-3" *ngFor="let link of links">
+                <div class="d-flex flex-row-reverse">
+                    <button type="button" class="btn btn-link" (click)="removeImage(link)" >Delete</button>
+                </div>
+                <img [src]="link" [alt]="">
+            </div>
+        </div>
+        <div class="form-check form-switch mt-4">
+            <input class="form-check-input" type="checkbox" [(ngModel)]="currLesson.is_active" name="is_active" id="isActive" checked="">
+            <label class="form-check-label" for="isActive">Is Active</label>
+        </div>
+        <button type="submit" class="btn btn-primary mt-4">Submit</button>
+    </fieldset>
+</form>
+<template #noLesson>
+    No lesson
+</template>
+

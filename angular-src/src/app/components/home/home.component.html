@@ -1,0 +1,20 @@
+
+<!-- This div is  intentionally blank. It creates the transparent black overlay over the video which you can modify in the CSS -->
+<div class="overlay"></div>
+
+<!-- The HTML5 video element that will create the background video on the header -->
+<video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
+    <source src="https://video-previews.elements.envatousercontent.com/files/5c991ff2-6057-4e0c-95f9-2f93aa76a6fa/video_preview_h264.mp4" type="video/mp4">
+</video>
+
+<div class="jumbotron mt-4">
+    <h1 class="display-4">Welcome to CommunApp</h1>
+    <p class="lead">The step-by-step app for community integration.</p>
+    <hr class="my-4">
+    <div *ngIf="!isLoggedIn()">
+        <p>You are not signed in. Please sign in or register.</p>
+        <a [routerLink]="['/register']" routerLinkActive="router-link-active"  class="btn btn-primary">Register</a>
+        <a [routerLink]="['/login']" routerLinkActive="router-link-active"  class="btn btn-secondary">Login</a>
+    </div>
+</div>
+
