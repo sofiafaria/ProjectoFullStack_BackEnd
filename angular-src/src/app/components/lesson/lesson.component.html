@@ -14,9 +14,14 @@
       <div class="row g-3" *ngFor="let lesson of lessons">
         <div class="card mb-3" style="max-width: 1600px;">
           <div class="row g-0">
-            <div class="col-md-4">
-              <img style="max-width: 250px;" src="https://st3.depositphotos.com/9998432/13335/v/1600/depositphotos_133351974-stock-illustration-default-placeholder-woman.jpg" class="img-fluid rounded-start" alt="...">
+            <div class="col-md-4" *ngIf="lesson.links.length>0;else noPhoto">
+              <img style="max-width: 250px;" [src]="lesson.links[0]" class="img-fluid rounded-start" alt="...">
             </div>
+            <ng-template #noPhoto>
+              <div class="col-md-4">
+                <h6>No photo to display</h6>
+              </div>
+            </ng-template>  
             <div class="col-md-8">
               <div class="card-body">
                 <h5 class="card-title">{{lesson.name}}</h5>

@@ -33,7 +33,7 @@ export class QuizBackofficeComponent implements OnInit {
     if(confirm('Are you sure you want to delete this quiz?')){
       this.quizService.deleteQuiz(id).subscribe(() => this.quizzes.filter(x => x._id!==id));
     }
-    this.flashMessageService.show('Quiz deleted', {cssClass: 'alert alert-sucess', timeout: 3000});
+    this.flashMessageService.show('Quiz deleted', {cssClass: 'alert alert-success', timeout: 3000});
     this.showQuizzes(); 
   }
 

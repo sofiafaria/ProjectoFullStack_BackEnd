@@ -32,7 +32,7 @@ export class NavbarComponent implements OnInit {
   }
 
   isAdmin(){
-    if (!this.isLoggedIn()){
+    if (this.isLoggedIn()==false){
       this.admin= false;
     }
     if(this.authService.isAdmin()){

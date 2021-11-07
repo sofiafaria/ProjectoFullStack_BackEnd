@@ -37,7 +37,7 @@ export class LessonService {
     return this.http.get(`http://localhost:3000/lesson/${id}`, {headers: headers});
   }
 
-  createLesson(lesson){
+  createLesson(lesson: ILesson){
     let headers = new HttpHeaders();
     const token =this.authService.loadToken();
     headers =headers.append('Authorization', token);
@@ -82,5 +82,27 @@ export class LessonService {
     else{
       return true;
     }
+  }
+
+  uploadLessonFile(lessonId: string, file: File){
+    let headers = new HttpHeaders();
+    const token =this.authService.loadToken();
+    headers =headers.append('Authorization', token);
+   // headers =headers.append('Content-Type', 'multipart/form-data'); //tive que tirar estava a dar erro...
+    headers = headers.append('Accept', 'application/json');
+    let formData = new FormData();
+    formData.append('name', `${lessonId}_${file.name}`);
+    formData.append('file', file, `${lessonId}_${file.name}`);
+    return this.http.post(`http://localhost:3000/lesson/${lessonId}/uploadFile`, formData, {headers: headers}).pipe(catchError(this.handleError));
+  }
+
+  deleteLessonFile(lessonId: string, filepath:string){
+    let headers = new HttpHeaders();
+    const token =this.authService.loadToken();
+    headers = headers.append('Authorization', token);
+    headers = headers.append('Content-Type', 'application/json');
+    let splitFileArray = filepath.split('/');
+    let fileId: string = splitFileArray[splitFileArray.length-1];
+    return this.http.delete(`http://localhost:3000/lesson/${lessonId}/deleteFile/${fileId}`, {headers: headers});
   }
 }

@@ -18,6 +18,7 @@ export class LessonBackofficeDetailComponent implements OnInit {
   imageData: string;
   formData:FormData = new FormData();
   links: string[] =[];
+  fileList: any[] = [];
 
   @Input() currLesson: ILesson;
 
@@ -43,9 +44,13 @@ export class LessonBackofficeDetailComponent implements OnInit {
          this.lessonService.getLesson(id).subscribe((lesson: any) =>{
            if(lesson.type =='success'){
              this.currLesson = lesson.body;
+
+           //display all the links associated with this lesson
+           this.links = this.currLesson.links;
            }
          });
-       }
+         
+    }
   }
   isEdit():Boolean{
     const id = this.route.snapshot.paramMap.get('id');
@@ -55,7 +60,6 @@ export class LessonBackofficeDetailComponent implements OnInit {
   onLessonSubmit(){
 
     const lesson = this.currLesson;
-    console.log(lesson);
 
     //Required Fields
     if(!this.lessonService.validateLesson(lesson)){
@@ -68,9 +72,13 @@ export class LessonBackofficeDetailComponent implements OnInit {
       //Create Lesson
         this.lessonService.createLesson(lesson).subscribe((data:any) => {
           if(data.type =='success'){
-            this.flashMessageService.show('Lesson created', {cssClass: 'alert alert-sucess', timeout: 3000});
+            let lessonId = data.body._id;
+            //Se o objecto lesson foi criado com sucesso então podemos fazer upload dos files
+            if(this.fileList.length>0){
+              this.fileList.forEach(file => this.uploadFile(lessonId, file));
+            }
+            this.flashMessageService.show('Lesson created', {cssClass: 'alert alert-success', timeout: 3000});
             this.router.navigate(['backoffice/lessons']);
-    
           }else{
             this.flashMessageService.show('Something went wrong', {cssClass: 'alert alert-danger', timeout: 3000});
           }
@@ -80,9 +88,27 @@ export class LessonBackofficeDetailComponent implements OnInit {
         }
         );
     }else{
+      //if edit
+      //first remove 
+      if(this.fileList.length>0){
+        this.fileList.forEach(file => {
+       //eliminar ficheiro do servidor
+          this.lessonService.deleteLessonFile(this.currLesson._id, file.name).subscribe((lesson: any) =>{
+            if(lesson.type =='success'){
+           //display all the links associated with this lesson
+            this.currLesson.links = lesson.body.links; 
+      //then update
+            this.uploadFile(this.currLesson._id, file)
+            }});
+        });
+      }
+
+      console.log(this.links);
+      console.log('links',this.currLesson.links);
+
       this.lessonService.updateLesson(lesson).subscribe((data: any) =>{
         if(data.type =='success'){
-          this.flashMessageService.show('Lesson updated', {cssClass: 'alert alert-sucess', timeout: 3000});
+          this.flashMessageService.show('Lesson updated', {cssClass: 'alert alert-success', timeout: 3000});
           this.router.navigate(['backoffice/lessons']);        
         }
         else{
@@ -102,13 +128,8 @@ export class LessonBackofficeDetailComponent implements OnInit {
       const reader = new FileReader();
       reader.onload=() =>{
         this.imageData = reader.result as string;
-          //adicionar ao array de imagens
-      //  this.currLesson.links.push({
-      //   type: file.type,
-      //   path: file.name
-      // });
-      this.currLesson.links.push(file.name);
-        this.links.push(this.imageData);      
+        this.links.push(this.imageData);
+        this.fileList.push(file);  
       }
 
       reader.readAsDataURL(file);
@@ -120,8 +141,28 @@ export class LessonBackofficeDetailComponent implements OnInit {
   }
 
   removeImage(link){
-    this.links.splice(link,1);
-    //this.formData.delete(link.type);
+    if(this.currLesson._id !=''){
+          //eliminar ficheiro do servidor
+          this.lessonService.deleteLessonFile(this.currLesson._id, link).subscribe((lesson: any) =>{
+            if(lesson.type =='success'){
+           //display all the links associated with this lesson
+            this.currLesson.links = lesson.body.links;  
+            this.flashMessageService.show('File was deleted', {cssClass: 'alert alert-success', timeout: 3000});
+            }else{
+              this.flashMessageService.show('File was not deleted', {cssClass: 'alert alert-danger', timeout: 3000});
+            }});
+          }
+      this.links.splice(link,1);
+}
+
+  uploadFile (lessonId: string, file: File){
+    this.lessonService.uploadLessonFile(lessonId, file).subscribe((data: any) =>{
+      if(data.type =='success'){
+        this.flashMessageService.show('Files were uploaded', {cssClass: 'alert alert-success', timeout: 3000});
+      }else{
+        this.flashMessageService.show('Files were not uploaded', {cssClass: 'alert alert-danger', timeout: 3000});
+      }
+  })
   }
 
 }

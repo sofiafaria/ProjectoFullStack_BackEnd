@@ -29,7 +29,7 @@
         <div class="form-group">
             <label for="lesson" class="form-label mt-4">Lesson</label>
             <select class="form-select" id="lesson" name="lesson" [(ngModel)]="currQuiz.lesson">
-                <option *ngFor="let lesson of lessons"[value]="lesson._id">{{lesson.name}}</option>
+                <option *ngFor="let lesson of lessons" [value]="lesson._id" [selected]= "lesson._id==currQuiz.lesson">{{lesson.name}}</option>
             </select>
           </div>
         <div class="form-check form-switch mt-4">

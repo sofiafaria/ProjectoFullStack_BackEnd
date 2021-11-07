@@ -15,9 +15,10 @@ export class LessonComponent implements OnInit {
       //load the lessons on page initialize
       this.lessonService.getLessons().subscribe((lessons: any) =>{
         if(lessons.type =='success'){
-          this.lessons = lessons.body;
+          this.lessons = lessons.body.filter((lesson: ILesson) => lesson.is_active==true);
         }
       });
   }
 
 }
+  

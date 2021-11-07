@@ -34,7 +34,7 @@ export class UserBackofficeComponent implements OnInit {
       this.userService.deleteUser(id)
         .subscribe(() => this.users.filter(x => x._id!==id));
     }
-    this.flashMessageService.show('User deleted', {cssClass: 'alert alert-sucess', timeout: 3000});
+    this.flashMessageService.show('User deleted', {cssClass: 'alert alert-success', timeout: 3000});
     this.showUsers(); 
   }
 

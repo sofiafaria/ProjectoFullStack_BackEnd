@@ -24,7 +24,11 @@ import { QuizBackofficeComponent } from './components/quiz-backoffice/quiz-backo
 import { QuizBackofficeDetailComponent } from './components/quiz-backoffice-detail/quiz-backoffice-detail.component';
 import { QuestionBackofficeComponent } from './components/question-backoffice/question-backoffice.component';
 import { QuestionBackofficeDetailComponent } from './components/question-backoffice-detail/question-backoffice-detail.component';
-
+import { QuizDetailComponent } from './components/quiz-detail/quiz-detail.component';
+import { QuestionComponent } from './components/question/question.component';
+import { FormModalComponent } from './components/form-modal/form-modal.component';
+import { SelectModalComponent } from './components/select-modal/select-modal.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 import { ValidateService } from './services/validate.service';
 import { AuthService } from './services/auth.service';
@@ -35,10 +39,7 @@ import { LessonService } from './services/lesson.service';
 import { QuizService } from './services/quiz.service';
 import { QuestionService } from './services/question.service';
 import { UserService } from './services/user.service';
-import { QuizDetailComponent } from './components/quiz-detail/quiz-detail.component';
-import { QuestionComponent } from './components/question/question.component';
-import { FormModalComponent } from './components/form-modal/form-modal.component';
-import { SelectModalComponent } from './components/select-modal/select-modal.component';
+
 
 
 
@@ -68,7 +69,8 @@ import { SelectModalComponent } from './components/select-modal/select-modal.com
     QuizDetailComponent,
     QuestionComponent,
     FormModalComponent,
-    SelectModalComponent
+    SelectModalComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

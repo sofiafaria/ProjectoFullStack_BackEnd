@@ -58,7 +58,7 @@ export class ProfileComponent implements OnInit {
 
     this.userService.updateUser(myUser).subscribe((data: any) =>{
       if(data.type =='success'){
-        this.flashMessageService.show('User updated', {cssClass: 'alert alert-sucess', timeout: 3000});
+        this.flashMessageService.show('User updated', {cssClass: 'alert alert-success', timeout: 3000});
         this.toggleEdit();     
       }
       else{

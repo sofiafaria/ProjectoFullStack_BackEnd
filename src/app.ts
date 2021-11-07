@@ -58,8 +58,7 @@ export default class App {
     }));
 
     //images
-    //this.express.use('/public/images', express.static(path.join('public/images')))
-    
+    this.express.use(express.static(path.join('./public')));
     
     this.express.use(session({
       secret: "yoursecret",

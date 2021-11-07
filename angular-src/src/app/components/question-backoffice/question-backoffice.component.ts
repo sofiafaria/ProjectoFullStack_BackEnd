@@ -33,7 +33,7 @@ export class QuestionBackofficeComponent implements OnInit {
     if(confirm('Are you sure you want to delete this question?')){
       this.questionService.deleteQuestion(id).subscribe(() => this.questions.filter(x => x._id!==id));
     }
-    this.flashMessageService.show('Question deleted', {cssClass: 'alert alert-sucess', timeout: 3000});
+    this.flashMessageService.show('Question deleted', {cssClass: 'alert alert-success', timeout: 3000});
     this.showQuestions(); 
   }
 

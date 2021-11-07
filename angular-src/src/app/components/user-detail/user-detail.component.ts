@@ -84,7 +84,7 @@ export class UserDetailComponent implements OnInit {
       //Create User
         this.authService.registerUser(user).subscribe((data:any) => {
           if(data.type =='success'){
-            this.flashMessageService.show('User created', {cssClass: 'alert alert-sucess', timeout: 3000});
+            this.flashMessageService.show('User created', {cssClass: 'alert alert-success', timeout: 3000});
             this.router.navigate(['backoffice/users']);
     
           }else{
@@ -98,7 +98,7 @@ export class UserDetailComponent implements OnInit {
     }else{
       this.userService.updateUser(user).subscribe((data: any) =>{
         if(data.type =='success'){
-          this.flashMessageService.show('User updated', {cssClass: 'alert alert-sucess', timeout: 3000});
+          this.flashMessageService.show('User updated', {cssClass: 'alert alert-success', timeout: 3000});
           this.router.navigate(['backoffice/users']);        
         }
         else{

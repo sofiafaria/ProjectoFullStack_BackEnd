@@ -88,7 +88,7 @@ export class QuestionBackofficeDetailComponent implements OnInit {
       //Create Question
         this.questionService.createQuestion(question).subscribe((data:any) => {
           if(data.type =='success'){
-            this.flashMessageService.show('Question created', {cssClass: 'alert alert-sucess', timeout: 3000});
+            this.flashMessageService.show('Question created', {cssClass: 'alert alert-success', timeout: 3000});
             this.router.navigate(['backoffice/questions']);
     
           }else{
@@ -102,7 +102,7 @@ export class QuestionBackofficeDetailComponent implements OnInit {
     }else{
       this.questionService.updateQuestion(question).subscribe((data: any) =>{
         if(data.type =='success'){
-          this.flashMessageService.show('Question updated', {cssClass: 'alert alert-sucess', timeout: 3000});
+          this.flashMessageService.show('Question updated', {cssClass: 'alert alert-success', timeout: 3000});
           this.router.navigate(['backoffice/questions']);        
         }
         else{

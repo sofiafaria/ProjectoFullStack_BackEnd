@@ -7,36 +7,9 @@ import LessonController from "../controller/lesson.controller";
 import UserController from "../controller/user.controller";
 import QuizController from "../controller/quiz.controller";
 import QuestionController from "../controller/question.controller";
-//import multer from 'multer';
+import upload from "../core/file/helper";
 
 const router = Router();
-/*
-*** TODO: File upload
-*/
-// //importa para o disco
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//         cb(null, './uploads/')
-//     },
-//     filename: function (req: any, file: any, cb: any) {
-//         cb(null, file.originalname)
-//     }
-// });
-//
-// //Validação mimetype no servidor
-// const fileFilter = (req: any,file: any,cb: any) => {
-//     if(file.mimetype === "image/jpg"  || 
-//        file.mimetype ==="image/jpeg"  || 
-//        file.mimetype ===  "image/png"){
-     
-//     cb(null, true);
-//    }else{
-//       cb(new Error("Image uploaded is not of type jpg/jpeg or png"),false);
-//     }
-// }
-// //upload
-// const upload = multer({storage: storage, fileFilter : fileFilter});
-
 
 router.get('/', AppController.welcome);
 
@@ -59,6 +32,8 @@ router.post('/lessons', passport.authenticate('jwt', {session: false}),[body('na
                         body('level').isInt(),
                         body('links.*').isString(),
                         sanitizeBody('description')], LessonController.create);
+router.post('/lesson/:id/uploadFile',passport.authenticate('jwt', {session: false}), upload , LessonController.createFile);
+router.delete('/lesson/:id/deleteFile/:fileId',passport.authenticate('jwt', {session: false}) , LessonController.deleteFile);
 router.get('/lesson/:id',passport.authenticate('jwt', {session: false}), [param('id').isMongoId()], LessonController.getOne);
 router.put('/lesson/:id',passport.authenticate('jwt', {session: false}), [param('id').isMongoId()], LessonController.update);
 router.delete('/lesson/:id',passport.authenticate('jwt', {session: false}), [param('id').isMongoId()], LessonController.delete);
@@ -105,7 +80,7 @@ router.put('/question/:id', passport.authenticate('jwt', {session: false}),[para
 router.delete('/question/:id',passport.authenticate('jwt', {session: false}), [param('id').isMongoId()], QuestionController.delete);
 router.get('/question/:id',passport.authenticate('jwt', {session: false}), [param('id').isMongoId()], QuestionController.getOne);
 // router.put('/question/inactive/:id' ,[param('id').isMongoId()], QuestionController.inactive);
-// router.put('/question/activate/:id', [param('id').isMongoId()], QuestionController.active);
+// router.put('/question/activate/:id', [param('id').isMongoId()], QuestionController.active);  
 
 
 //All others go to

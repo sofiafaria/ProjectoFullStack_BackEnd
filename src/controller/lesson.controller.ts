@@ -3,6 +3,8 @@ import { IMessage } from '../models/Message';
 import { Request, Response } from 'express';
 import { Result, ValidationError, validationResult } from "express-validator";
 import { CallbackError, Document } from "mongoose";
+import fs from 'fs';
+import path from 'path';
 
 class LessonController{
 
@@ -96,7 +98,6 @@ class LessonController{
         const errors: Array<ValidationError> = validationResult(req).array();
 
         if(errors.length > 0) return res.status(406).json(errors);
-        console.log(req);
 
         try {
             const lesson : Document<ILesson> = await Lesson.findOneAndUpdate({_id : req.params.id}, {$set: req.body},{new: true});
@@ -137,6 +138,15 @@ class LessonController{
                         type: "error"}
                         );
             }
+            //Listar todos os ficheiros na directoria publica das imagens. Para cada um se encontrar lessonId na descrição remove ficheiro
+            let folder = path.join(__dirname, '../../public/images/');
+            fs.readdir(folder, (err, files) => {
+                files.forEach((file: string) => {
+                    if(file.includes(req.params.id)){
+                        fs.unlink(`${folder}${file}`,(err) => console.log(err));
+                    }
+                });
+              });
             let message :IMessage= {
                 http: 200,
                 code: "LessonDeleted",
@@ -150,6 +160,86 @@ class LessonController{
             
         }
     }
+
+    public async createFile(req: Request, res: Response): Promise<Response>{
+       //caminho queguarda o destino da imagem
+        const path = 'http://localhost:3000/images/' + req.file?.filename;
+        try{
+            const links = await Lesson.findOne({_id : req.params.id}).select('links');
+            if(!links){
+                try {
+                    const lesson = await Lesson.updateOne({_id : req.params.id}, {$push: {links : path}},{new: true});
+                    if(!lesson){
+                        return res.status(404)
+                        .json({
+                            http: 404,
+                            code: "LessonNotFound",
+                            type: "error"}
+                            );
+                    }
+                    let message :IMessage= {
+                        http: 200,
+                        code: "FileUploaded",
+                        type: "success"
+                    };
+                    message.body = lesson;
+                    return res.status(message.http).json(message);
+                    
+                } catch (error) {
+                    return res.status(400).json({http: 400,
+                        code: "BadRequest",
+                        type: "error"});
+                }
+
+            }else{
+                try{
+                    const lesson = await Lesson.updateOne({_id : req.params.id}, {$push: {links : path}},{new: true});      
+                    let message :IMessage= {
+                        http: 200,
+                        code: "FileUploaded",
+                        type: "success"
+                    };
+                    message.body = lesson;
+                    return res.status(message.http).json(message);
+
+                }catch(error){
+                    return res.status(404).json({http: 400,
+                        code: "BadRequest",
+                        type: "error"});
+                    
+                }
+            }
+        }catch(error){
+            return res.status(404).json({http: 400,
+                code: "BadRequest",
+                type: "error"});
+        }
+           
+    }
+
+    public async deleteFile(req: Request, res: Response): Promise<Response>{
+        let reqPath = path.join(__dirname, '../../public/images/')+req.params.fileId;
+        let linkPath =  'http://localhost:3000/images/' + req.params.fileId;
+       
+        try{
+            const lesson = await Lesson.findOneAndUpdate({_id : req.params.id}, {$pull: {links: linkPath}},{new: true});   
+                    let message :IMessage= {
+                        http: 200,
+                        code: "FileUploaded",
+                        type: "success"
+                    };
+                    fs.unlink(reqPath,(err) =>console.log(err));
+                    message.body = lesson;
+                    return res.status(message.http).json(message);
+        }catch(error){
+            return res.status(400).json({http: 400,
+                code: "BadRequest",
+                type: "error"});
+        }
+    }
+
+
+
     public async active(req: Request, res: Response): Promise<Response>{
         const errors: Array<ValidationError> = validationResult(req).array();
 

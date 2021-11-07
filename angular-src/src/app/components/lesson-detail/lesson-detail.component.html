@@ -6,6 +6,16 @@
                 <button type="button" class="btn btn-link" [routerLink]="['/lessons']" routerLinkActive="router-link-active" >Go Back</button>
             </div>
         </div>
+        <div *ngIf="lesson.links.length>0">
+            <ngb-carousel class="d-flex flex-column text-center justify-content-center align-items-center">
+                <ng-template ngbSlide *ngFor="let link of lesson.links">
+                    <div class="picsum-img-wrapper">
+                        <img [src]="link" alt="Carousel One" style="height: 50vh">>
+                    </div>
+                </ng-template>
+            </ngb-carousel>
+        </div>
+        {{lesson.description}}
     </div>
 </div>
-{{lesson.description}}
+
